@@ -9,4 +9,12 @@ public class HtmlPage {
     public HtmlPage(HtmlElements htmlElements) {
         this.htmlElements = htmlElements;
     }
+
+    public HtmlElements getHtmlElements() {
+        return htmlElements;
+    }
+
+    public void setHtmlElements(HtmlElements htmlElements) {
+        this.htmlElements = htmlElements;
+    }
 }

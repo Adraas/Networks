@@ -1,36 +1,28 @@
 package ru.wkn.model.htmlpage.htmlelements.image;
 
+import ru.wkn.model.htmlpage.htmlelements.HtmlAttribute;
 import ru.wkn.model.htmlpage.htmlelements.HtmlElement;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class HtmlImage extends HtmlElement {
 
-    private List<HtmlAttributeImage> htmlAttributesOfImage;
+    private List<HtmlAttribute> htmlAttributesOfImage;
 
-    public HtmlImage(Map<String, String> data) {
+    public HtmlImage(List<HtmlAttribute> htmlAttributes) {
+        super(htmlAttributes);
         htmlAttributesOfImage = new ArrayList<>();
-        attributesInit(data);
     }
 
-    private void attributesInit(Map<String, String> data) {
-        Iterator iterator = data.keySet().iterator();
-        for (; iterator.hasNext(); iterator.next()) {
-            //
-        }
-    }
-
-    public List<HtmlAttributeImage> getHtmlAttributesOfImage() {
+    public List<HtmlAttribute> getHtmlAttributesOfImage() {
         return htmlAttributesOfImage;
     }
 
     public String getValueOfAttribute(String attributeName) {
-        for (HtmlAttributeImage htmlAttributeImage : htmlAttributesOfImage) {
-            if (attributeName.equals(htmlAttributeImage.getAttributeName())) {
-                return htmlAttributeImage.getAttributeValue();
+        for (HtmlAttribute htmlAttributeOfImage : htmlAttributesOfImage) {
+            if (attributeName.equals(htmlAttributeOfImage.getAttributeName())) {
+                return htmlAttributeOfImage.getAttributeValue();
             }
         }
         return null;

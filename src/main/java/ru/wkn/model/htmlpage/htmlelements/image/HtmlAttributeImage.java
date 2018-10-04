@@ -10,6 +10,7 @@ public class HtmlAttributeImage extends HtmlAttribute {
     private String attributeValue;
 
     public HtmlAttributeImage(String attributeName, String attributeValue) {
+        super(attributeName, attributeValue);
         this.attributeName = attributeName;
         this.attributeValue = attributeValue;
     }

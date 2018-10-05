@@ -10,12 +10,15 @@ import java.util.Map;
 public class HtmlElementFactory {
 
     public static HtmlElement createHtmlElement(String tagName, Map<String, String> dataAttributes) {
-        return tagName.equals("a") ? new HtmlImage(htmlAttributes(dataAttributes))
+        return tagName.equals("img") ? new HtmlImage(htmlAttributes(dataAttributes))
                 : null;
     }
 
     private static List<HtmlAttribute> htmlAttributes(Map<String, String> dataAttributes) {
         List<HtmlAttribute> htmlAttributes = new ArrayList<>();
+        if (dataAttributes == null || dataAttributes.isEmpty()) {
+            return null;
+        }
         Iterator<String> iterator = dataAttributes.keySet().iterator();
         for (; iterator.hasNext();) {
             String attributeName = iterator.next();

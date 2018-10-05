@@ -5,7 +5,7 @@ import ru.wkn.model.htmlpage.htmlelements.image.HtmlImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HttpPageHandler {
+public class HtmlPageHandler {
 
     public List<HtmlImage> imagesFromTheSameSite(List<HtmlImage> htmlImages, String domainNameServer) {
         List<HtmlImage> imagesFromTheSameSite = new ArrayList<>();

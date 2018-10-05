@@ -20,11 +20,14 @@ public class HtmlImage extends HtmlElement {
     }
 
     public String getValueOfAttribute(String attributeName) {
+        if (htmlAttributesOfImage == null || htmlAttributesOfImage.isEmpty()) {
+            return "";
+        }
         for (HtmlAttribute htmlAttributeOfImage : htmlAttributesOfImage) {
             if (attributeName.equals(htmlAttributeOfImage.getAttributeName())) {
                 return htmlAttributeOfImage.getAttributeValue();
             }
         }
-        return null;
+        return "";
     }
 }

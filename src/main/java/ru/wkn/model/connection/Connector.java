@@ -31,14 +31,12 @@ public class Connector {
         return socket;
     }
 
-    public Socket getSocket(String host, int port) throws IOException {
-        socket = new Socket(host, port);
-        isConnected = socket.isConnected();
-        return socket;
+    public void setHost(String host) {
+        this.host = host;
     }
 
-    public String httpRequest(String httpRequest) {
-        return null;
+    public void setPort(int port) {
+        this.port = port;
     }
 
     public boolean isConnected() {

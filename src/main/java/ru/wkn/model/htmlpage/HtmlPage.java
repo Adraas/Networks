@@ -1,20 +1,18 @@
 package ru.wkn.model.htmlpage;
 
-import ru.wkn.model.htmlpage.htmlelements.HtmlElements;
+import ru.wkn.model.htmlpage.htmlelements.HtmlElement;
+
+import java.util.List;
 
 public class HtmlPage {
 
-    private HtmlElements htmlElements;
+    private List<HtmlElement> htmlElements;
 
-    public HtmlPage(HtmlElements htmlElements) {
+    public HtmlPage(List<HtmlElement> htmlElements) {
         this.htmlElements = htmlElements;
     }
 
-    public HtmlElements getHtmlElements() {
+    public List<HtmlElement> getHtmlElements() {
         return htmlElements;
-    }
-
-    public void setHtmlElements(HtmlElements htmlElements) {
-        this.htmlElements = htmlElements;
     }
 }

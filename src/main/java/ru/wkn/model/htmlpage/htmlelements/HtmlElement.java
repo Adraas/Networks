@@ -1,16 +1,16 @@
 package ru.wkn.model.htmlpage.htmlelements;
 
-import java.util.List;
+import java.util.Set;
 
 public abstract class HtmlElement {
 
-    private List<HtmlAttribute> htmlAttributes;
+    private Set<HtmlAttribute> htmlAttributes;
 
-    public HtmlElement(List<HtmlAttribute> htmlAttributes) {
+    public HtmlElement(Set<HtmlAttribute> htmlAttributes) {
         this.htmlAttributes = htmlAttributes;
     }
 
-    public List<HtmlAttribute> getHtmlAttributes() {
+    public Set<HtmlAttribute> getHtmlAttributes() {
         return htmlAttributes;
     }
 }

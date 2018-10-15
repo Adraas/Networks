@@ -2,10 +2,10 @@ package ru.wkn.model.htmlpage.htmlelements;
 
 import ru.wkn.model.htmlpage.htmlelements.image.HtmlImage;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class HtmlElementFactory {
 
@@ -14,13 +14,13 @@ public class HtmlElementFactory {
                 : null;
     }
 
-    private static List<HtmlAttribute> htmlAttributes(Map<String, String> dataAttributes) {
-        List<HtmlAttribute> htmlAttributes = new ArrayList<>();
+    private static Set<HtmlAttribute> htmlAttributes(Map<String, String> dataAttributes) {
+        Set<HtmlAttribute> htmlAttributes = new HashSet<>();
         if (dataAttributes == null || dataAttributes.isEmpty()) {
             return null;
         }
         Iterator<String> iterator = dataAttributes.keySet().iterator();
-        for (; iterator.hasNext();) {
+        for (; iterator.hasNext(); ) {
             String attributeName = iterator.next();
             HtmlAttribute htmlAttribute = HtmlAttributeFactory
                     .createHtmlAttribute(attributeName, dataAttributes.get(attributeName));

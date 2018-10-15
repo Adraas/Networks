@@ -7,22 +7,22 @@ import java.util.List;
 
 public class HtmlPageHandler {
 
-    public List<HtmlImage> imagesFromTheSameSite(List<HtmlImage> htmlImages, String domainNameServer) {
+    public List<HtmlImage> imagesFromTheSameSite(List<HtmlImage> htmlImages, String protocolAndHostname) {
         List<HtmlImage> imagesFromTheSameSite = new ArrayList<>();
         for (HtmlImage currentImage : htmlImages) {
             String currentHrefToLowerCase = currentImage.getValueOfAttribute("src").toLowerCase();
-            if (currentHrefToLowerCase.contains(domainNameServer.toLowerCase())) {
+            if (currentHrefToLowerCase.startsWith(protocolAndHostname.toLowerCase())) {
                 imagesFromTheSameSite.add(currentImage);
             }
         }
         return imagesFromTheSameSite;
     }
 
-    public List<HtmlImage> imagesFromTheOtherSite(List<HtmlImage> htmlImages, String domainNameServer) {
+    public List<HtmlImage> imagesFromTheOtherSite(List<HtmlImage> htmlImages, String protocolAndHostname) {
         List<HtmlImage> imagesFromTheOtherSite = new ArrayList<>();
         for (HtmlImage currentImage : htmlImages) {
             String currentHrefToLowerCase = currentImage.getValueOfAttribute("src").toLowerCase();
-            if (!currentHrefToLowerCase.contains(domainNameServer.toLowerCase())) {
+            if (!currentHrefToLowerCase.startsWith(protocolAndHostname.toLowerCase())) {
                 imagesFromTheOtherSite.add(currentImage);
             }
         }

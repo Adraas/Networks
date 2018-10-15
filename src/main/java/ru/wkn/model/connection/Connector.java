@@ -20,7 +20,7 @@ public class Connector {
         isConnected = socket.isConnected();
     }
 
-    public void disconnect() throws IOException {
+    public void close() throws IOException {
         socket.close();
         isConnected = socket.isConnected();
     }

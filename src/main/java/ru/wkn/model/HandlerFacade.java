@@ -5,7 +5,7 @@ import ru.wkn.model.connection.HttpManager;
 import ru.wkn.model.htmlpage.HtmlPage;
 import ru.wkn.model.httppagehandler.HtmlPageHandler;
 
-public class HttpHandlerFacade {
+public class HandlerFacade {
 
     private HttpManager httpManager;
     private Connector connector;

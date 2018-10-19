@@ -17,13 +17,15 @@ public class RequestManager {
             connector.connect();
             if (connector.isConnected()) {
                 OutputStream outputStream = connector.getSocket().getOutputStream();
+                InputStream inputStream = connector.getSocket().getInputStream();
+
                 outputStream.write(createHttpRequest(httpMethod).getBytes());
                 outputStream.flush();
-                outputStream.close();
 
-                InputStream inputStream = connector.getSocket().getInputStream();
                 byte[] responseAsByteArray = new byte[inputStream.available()];
                 int resultOfRead = inputStream.read(responseAsByteArray);
+
+                outputStream.close();
                 inputStream.close();
                 if (resultOfRead != -1) {
                     return new String(responseAsByteArray);
@@ -38,9 +40,9 @@ public class RequestManager {
 
     private String createHttpRequest(String httpMethod) {
         String host = connector.getUri().getHost();
-        String path = connector.getDomainNameServer();
+        String domainNameServer = connector.getDomainNameServer();
         return httpMethod + " " + host + " HTTP/1.1\n"
-                + "Host: " + path + "\n"
+                + "Host: " + domainNameServer + "\n"
                 + "Connection: Close\n";
     }
 

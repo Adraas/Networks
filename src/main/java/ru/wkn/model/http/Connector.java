@@ -13,7 +13,7 @@ public class Connector {
     private int port;
     private boolean isConnected;
 
-    private Connector(String uriAddress, int port) {
+    public Connector(String uriAddress, int port) throws IOException {
         try {
             uri = new URI(uriAddress);
             domainNameServer = uri.getScheme() + uri.getAuthority() + uri.getPath();
@@ -21,26 +21,29 @@ public class Connector {
             e.printStackTrace();
         }
         this.port = port;
+        socketInit();
     }
 
     private void socketInit() throws IOException {
         socket = new Socket(uri.getHost(), port);
+        isConnected = socket.isConnected();
     }
 
     void connect() throws IOException {
         if (socket == null) {
             socketInit();
         }
-        socket.connect(socket.getRemoteSocketAddress());
+        if (!socket.isConnected()) {
+            socket.connect(socket.getRemoteSocketAddress());
+        }
         isConnected = socket.isConnected();
     }
 
     void close() throws IOException {
-        if (socket == null) {
-            socketInit();
+        if (socket != null) {
+            socket.close();
+            isConnected = socket.isConnected();
         }
-        socket.close();
-        isConnected = socket.isConnected();
     }
 
     URI getUri() {

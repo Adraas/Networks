@@ -16,7 +16,7 @@ public class Connector {
     public Connector(String uriAddress, int port) throws IOException {
         try {
             uri = new URI(uriAddress);
-            domainNameServer = uri.getScheme() + uri.getAuthority() + uri.getPath();
+            domainNameServer = uri.getScheme() + "://" + uri.getAuthority() + uri.getPath();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -34,7 +34,7 @@ public class Connector {
             socketInit();
         }
         if (!socket.isConnected()) {
-            socket.connect(socket.getRemoteSocketAddress());
+            socket.connect(socket.getRemoteSocketAddress(), port);
         }
         isConnected = socket.isConnected();
     }

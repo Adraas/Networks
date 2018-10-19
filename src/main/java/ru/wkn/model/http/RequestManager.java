@@ -41,9 +41,10 @@ public class RequestManager {
     private String createHttpRequest(String httpMethod) {
         String host = connector.getUri().getHost();
         String domainNameServer = connector.getDomainNameServer();
-        return httpMethod + " " + host + " HTTP/1.1\n"
-                + "Host: " + domainNameServer + "\n"
-                + "Connection: Close\n";
+        return httpMethod + " " + domainNameServer + " HTTP/1.1\r\n"
+                + "Host: " + host + "\r\n"
+                + "Connection: keep-alive\r\n"
+                + "\r\n";
     }
 
     public void setConnector(Connector connector) {

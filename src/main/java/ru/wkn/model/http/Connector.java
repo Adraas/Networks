@@ -35,7 +35,7 @@ public class Connector {
         isConnected = socket.isConnected();
     }
 
-    public void close() throws IOException {
+    void close() throws IOException {
         if (socket == null) {
             socketInit();
         }
@@ -43,7 +43,7 @@ public class Connector {
         isConnected = socket.isConnected();
     }
 
-    public URI getUri() {
+    URI getUri() {
         return uri;
     }
 
@@ -57,10 +57,6 @@ public class Connector {
 
     String getDomainNameServer() {
         return domainNameServer;
-    }
-
-    public int getPort() {
-        return port;
     }
 
     public void setPort(int port) {

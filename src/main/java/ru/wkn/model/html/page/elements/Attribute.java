@@ -1,11 +1,11 @@
-package ru.wkn.model.htmlpage.htmlelements;
+package ru.wkn.model.html.page.elements;
 
-public abstract class HtmlAttribute {
+public abstract class Attribute {
 
     private String attributeName;
     private String attributeValue;
 
-    public HtmlAttribute(String attributeName, String attributeValue) {
+    public Attribute(String attributeName, String attributeValue) {
         this.attributeName = attributeName;
         this.attributeValue = attributeValue;
     }

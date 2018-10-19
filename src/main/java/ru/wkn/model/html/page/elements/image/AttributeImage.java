@@ -1,15 +1,15 @@
-package ru.wkn.model.htmlpage.htmlelements.image;
+package ru.wkn.model.html.page.elements.image;
 
-import ru.wkn.model.htmlpage.htmlelements.HtmlAttribute;
+import ru.wkn.model.html.page.elements.Attribute;
 
 import java.util.Objects;
 
-public class HtmlAttributeImage extends HtmlAttribute {
+public class AttributeImage extends Attribute {
 
     private String attributeName;
     private String attributeValue;
 
-    public HtmlAttributeImage(String attributeName, String attributeValue) {
+    public AttributeImage(String attributeName, String attributeValue) {
         super(attributeName, attributeValue);
         this.attributeName = attributeName;
         this.attributeValue = attributeValue;
@@ -27,14 +27,14 @@ public class HtmlAttributeImage extends HtmlAttribute {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        HtmlAttributeImage that = (HtmlAttributeImage) o;
+        AttributeImage that = (AttributeImage) o;
         return Objects.equals(attributeName, that.attributeName) &&
                 Objects.equals(attributeValue, that.attributeValue);
     }
 
     @Override
     public String toString() {
-        return "HtmlAttributeImage{" +
+        return "AttributeImage{" +
                 "attributeName='" + attributeName + '\'' +
                 ", attributeValue='" + attributeValue + '\'' +
                 '}';

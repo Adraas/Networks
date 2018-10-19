@@ -1,14 +1,14 @@
 package ru.wkn.model;
 
-import ru.wkn.model.connection.Connector;
-import ru.wkn.model.connection.HttpManager;
-import ru.wkn.model.htmlpage.HtmlPage;
-import ru.wkn.model.httppagehandler.HtmlPageHandler;
+import ru.wkn.model.http.Connector;
+import ru.wkn.model.http.RequestManager;
+import ru.wkn.model.html.page.Page;
+import ru.wkn.model.html.handlers.HtmlPageHandler;
 
 public class HandlerFacade {
 
-    private HttpManager httpManager;
+    private RequestManager requestManager;
     private Connector connector;
-    private HtmlPage htmlPage;
+    private Page page;
     private HtmlPageHandler htmlPageHandler;
 }

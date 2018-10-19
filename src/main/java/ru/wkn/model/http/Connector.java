@@ -9,14 +9,12 @@ public class Connector {
 
     private URI uri;
     private Socket socket;
-    private String domainNameServer;
     private int port;
     private boolean isConnected;
 
     public Connector(String uriAddress, int port) throws IOException {
         try {
             uri = new URI(uriAddress);
-            domainNameServer = uri.getScheme() + "://" + uri.getAuthority() + uri.getPath();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -34,7 +32,7 @@ public class Connector {
             socketInit();
         }
         if (!socket.isConnected()) {
-            socket.connect(socket.getRemoteSocketAddress(), port);
+            socket.connect(socket.getRemoteSocketAddress());
         }
         isConnected = socket.isConnected();
     }
@@ -56,10 +54,6 @@ public class Connector {
         }
         isConnected = socket.isConnected();
         return socket;
-    }
-
-    String getDomainNameServer() {
-        return domainNameServer;
     }
 
     public void setPort(int port) {

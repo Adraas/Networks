@@ -22,6 +22,11 @@ public class RequestManager {
                 outputStream.write(createHttpRequest(httpMethod).getBytes());
                 outputStream.flush();
 
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 byte[] responseAsByteArray = new byte[inputStream.available()];
                 int resultOfRead = inputStream.read(responseAsByteArray);
 

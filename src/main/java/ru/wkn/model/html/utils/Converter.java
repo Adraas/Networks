@@ -1,4 +1,4 @@
-package ru.wkn.model.utils;
+package ru.wkn.model.html.utils;
 
 import org.jsoup.select.Elements;
 import ru.wkn.model.html.page.elements.Element;

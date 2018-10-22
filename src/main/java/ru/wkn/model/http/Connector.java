@@ -13,6 +13,7 @@ public class Connector {
     private boolean isConnected;
 
     public Connector(String uriAddress, int port) throws IOException {
+        uriAddress = protocolCheck(uriAddress);
         try {
             uri = new URI(uriAddress);
         } catch (URISyntaxException e) {
@@ -20,6 +21,16 @@ public class Connector {
         }
         this.port = port;
         socketInit();
+    }
+
+    private String protocolCheck(String uriAddress) {
+        String protocol = "http";
+        if (!uriAddress.startsWith(protocol)) {
+            StringBuilder stringBuilder = new StringBuilder(uriAddress);
+            stringBuilder.append(protocol, 0, protocol.length());
+            uriAddress = stringBuilder.toString();
+        }
+        return uriAddress;
     }
 
     private void socketInit() throws IOException {

@@ -22,12 +22,16 @@ public class RequestManager {
                 outputStream.write(createHttpRequest(httpMethod).getBytes());
                 outputStream.flush();
 
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                int sizeOfBuffer;
+                while ((sizeOfBuffer = inputStream.available()) == 0) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-                byte[] responseAsByteArray = new byte[inputStream.available()];
+
+                byte[] responseAsByteArray = new byte[sizeOfBuffer];
                 int resultOfRead = inputStream.read(responseAsByteArray);
 
                 outputStream.close();
@@ -45,11 +49,20 @@ public class RequestManager {
 
     private String createHttpRequest(String httpMethod) {
         String host = connector.getUri().getHost();
-        String path = connector.getUri().getPath();
-        return httpMethod + " /" + path + " HTTP/1.1\r\n"
-                + "Host: " + host + "\r\n"
-                + "Connection: keep-alive\r\n"
-                + "\r\n";
+        String path = pathCheck(connector.getUri().getPath());
+        return httpMethod.concat(" ").concat(path).concat(" HTTP/1.1\r\n")
+                .concat("Host: ").concat(host).concat("\r\n")
+                .concat("Accept: text/html\r\n")
+                .concat("Connection: keep-alive\r\n")
+                .concat("\r\n");
+    }
+
+    private String pathCheck(String path) {
+        if (path.startsWith("/")) {
+            return path;
+        } else {
+            return "/".concat(path);
+        }
     }
 
     public void setConnector(Connector connector) {

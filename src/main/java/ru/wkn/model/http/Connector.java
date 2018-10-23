@@ -1,6 +1,7 @@
 package ru.wkn.model.http;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -34,7 +35,7 @@ public class Connector {
     }
 
     private void socketInit() throws IOException {
-        socket = new Socket(uri.getHost(), port);
+        socket = new Socket();
         isConnected = socket.isConnected();
     }
 
@@ -43,7 +44,7 @@ public class Connector {
             socketInit();
         }
         if (!socket.isConnected()) {
-            socket.connect(socket.getRemoteSocketAddress());
+            socket.connect(new InetSocketAddress(uri.getHost(), port), 10000);
         }
         isConnected = socket.isConnected();
     }

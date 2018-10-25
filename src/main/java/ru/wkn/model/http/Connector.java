@@ -37,7 +37,7 @@ public class Connector {
         isConnected = socket.isConnected();
     }
 
-    void connect() throws IOException {
+    protected void connect() throws IOException {
         if (socket == null) {
             socketInit();
         }
@@ -47,18 +47,18 @@ public class Connector {
         isConnected = socket.isConnected();
     }
 
-    void close() throws IOException {
+    protected void close() throws IOException {
         if (socket != null) {
             socket.close();
             isConnected = socket.isConnected();
         }
     }
 
-    URI getUri() {
+    protected URI getUri() {
         return uri;
     }
 
-    Socket getSocket() {
+    protected Socket getSocket() {
         if (socket == null) {
             socketInit();
         }
@@ -66,11 +66,7 @@ public class Connector {
         return socket;
     }
 
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    boolean isConnected() {
+    protected boolean isConnected() {
         return isConnected;
     }
 }

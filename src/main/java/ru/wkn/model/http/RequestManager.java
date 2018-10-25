@@ -1,7 +1,8 @@
 package ru.wkn.model.http;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 public class RequestManager {
@@ -17,31 +18,23 @@ public class RequestManager {
             connector.connect();
             if (connector.isConnected()) {
                 OutputStream outputStream = connector.getSocket().getOutputStream();
-                InputStream inputStream = connector.getSocket().getInputStream();
+                BufferedReader inputStream = new BufferedReader(
+                        new InputStreamReader(connector.getSocket().getInputStream()));
 
                 outputStream.write(createHttpRequest(httpMethod).getBytes());
                 outputStream.flush();
 
-                int sizeOfBuffer;
-                while ((sizeOfBuffer = inputStream.available()) == 0) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                String currentInputLine;
+                String httpResponse = "";
+                while ((currentInputLine = inputStream.readLine()) != null) {
+                    httpResponse = httpResponse.concat(currentInputLine).concat("\n");
                 }
-
-                byte[] responseAsByteArray = new byte[sizeOfBuffer];
-                int resultOfRead = inputStream.read(responseAsByteArray);
 
                 outputStream.close();
                 inputStream.close();
-                if (resultOfRead != -1) {
-                    return new String(responseAsByteArray);
-                }
-            }
-            if (connector.isConnected()) {
                 connector.close();
+
+                return httpResponse;
             }
         }
         return null;

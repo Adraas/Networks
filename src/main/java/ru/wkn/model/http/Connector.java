@@ -13,7 +13,7 @@ public class Connector {
     private int port;
     private boolean isConnected;
 
-    public Connector(String uriAddress, int port) throws IOException {
+    public Connector(String uriAddress, int port) {
         uriAddress = protocolCheck(uriAddress);
         try {
             uri = new URI(uriAddress);
@@ -27,14 +27,12 @@ public class Connector {
     private String protocolCheck(String uriAddress) {
         String protocol = "http";
         if (!uriAddress.startsWith(protocol)) {
-            StringBuilder stringBuilder = new StringBuilder(uriAddress);
-            stringBuilder.append(protocol, 0, protocol.length());
-            uriAddress = stringBuilder.toString();
+            uriAddress = protocol.concat("://").concat(uriAddress);
         }
         return uriAddress;
     }
 
-    private void socketInit() throws IOException {
+    private void socketInit() {
         socket = new Socket();
         isConnected = socket.isConnected();
     }
@@ -60,7 +58,7 @@ public class Connector {
         return uri;
     }
 
-    Socket getSocket() throws IOException {
+    Socket getSocket() {
         if (socket == null) {
             socketInit();
         }

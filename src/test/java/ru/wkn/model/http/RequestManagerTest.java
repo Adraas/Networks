@@ -10,7 +10,7 @@ class RequestManagerTest {
 
     @Test
     void testGetResponseOnHttpRequestMethod() throws IOException {
-        Connector connector = new Connector("https://yandex.ru", 80);
+        Connector connector = new Connector("http://samadm.ru/", 80);
         RequestManager requestManager = new RequestManager(connector);
         String httpResponse = requestManager.getResponseOnHttpRequest("GET");
         assertNotEquals(httpResponse, "");

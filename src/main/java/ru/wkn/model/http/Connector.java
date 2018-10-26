@@ -10,11 +10,13 @@ public class Connector {
 
     private URI uri;
     private Socket socket;
+    private String uriAddress;
     private int port;
     private boolean isConnected;
 
     public Connector(String uriAddress, int port) {
         uriAddress = protocolCheck(uriAddress);
+        this.uriAddress = uriAddress;
         try {
             uri = new URI(uriAddress);
         } catch (URISyntaxException e) {
@@ -68,5 +70,9 @@ public class Connector {
 
     protected boolean isConnected() {
         return isConnected;
+    }
+
+    public String getUriAddress() {
+        return uriAddress;
     }
 }

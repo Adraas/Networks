@@ -8,24 +8,30 @@ import java.util.List;
 public class HtmlPageHandler {
 
     public List<Image> imagesFromTheSameSite(List<Image> htmlImages, String uriAddress) {
-        List<Image> imagesFromTheSameSite = new ArrayList<>();
-        for (Image currentImage : htmlImages) {
-            String currentHrefToLowerCase = currentImage.getValueOfAttribute("src").toLowerCase();
-            if (currentHrefToLowerCase.startsWith(uriAddress.toLowerCase())) {
-                imagesFromTheSameSite.add(currentImage);
+        if (htmlImages != null) {
+            List<Image> imagesFromTheSameSite = new ArrayList<>();
+            for (Image currentImage : htmlImages) {
+                String currentHrefToLowerCase = currentImage.getValueOfAttribute("src").toLowerCase();
+                if (currentHrefToLowerCase.startsWith(uriAddress.toLowerCase())) {
+                    imagesFromTheSameSite.add(currentImage);
+                }
             }
+            return imagesFromTheSameSite;
         }
-        return imagesFromTheSameSite;
+        return null;
     }
 
     public List<Image> imagesFromTheOtherSite(List<Image> htmlImages, String uriAddress) {
-        List<Image> imagesFromTheOtherSite = new ArrayList<>();
-        for (Image currentImage : htmlImages) {
-            String currentHrefToLowerCase = currentImage.getValueOfAttribute("src").toLowerCase();
-            if (!currentHrefToLowerCase.startsWith(uriAddress.toLowerCase())) {
-                imagesFromTheOtherSite.add(currentImage);
+        if (htmlImages != null) {
+            List<Image> imagesFromTheOtherSite = new ArrayList<>();
+            for (Image currentImage : htmlImages) {
+                String currentHrefToLowerCase = currentImage.getValueOfAttribute("src").toLowerCase();
+                if (!currentHrefToLowerCase.startsWith(uriAddress.toLowerCase())) {
+                    imagesFromTheOtherSite.add(currentImage);
+                }
             }
+            return imagesFromTheOtherSite;
         }
-        return imagesFromTheOtherSite;
+        return null;
     }
 }

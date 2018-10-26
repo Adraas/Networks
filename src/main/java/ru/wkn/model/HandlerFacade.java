@@ -17,12 +17,10 @@ public class HandlerFacade {
 
     private Connector connector;
     private RequestManager requestManager;
-    private HtmlPageHandler htmlPageHandler;
 
     public HandlerFacade(Connector connector) {
         this.connector = connector;
         requestManager = new RequestManager(connector);
-        htmlPageHandler = new HtmlPageHandler();
     }
 
     public void setConnector(Connector connector) {
@@ -35,19 +33,18 @@ public class HandlerFacade {
         String httpResponse = requestManager.getResponseOnHttpRequest(httpMethod);
         Page page = getPage(httpResponse);
 
-        List<Image> images = Converter.selectImagesFromHtmlElements(page.getElements());
+        List<Image> images = HtmlPageHandler.selectImagesFromHtmlElements(page.getElements());
 
         switch (place) {
             case "same":
-                images = htmlPageHandler.imagesFromTheSameSite(images, uriAddress);
+                images = HtmlPageHandler.imagesFromTheSameSite(images, uriAddress);
                 break;
             case "other":
-                images = htmlPageHandler.imagesFromTheOtherSite(images, uriAddress);
+                images = HtmlPageHandler.imagesFromTheOtherSite(images, uriAddress);
                 break;
             default:
                 images = null;
         }
-
         return Converter.convertImagesToTheirLinks(images);
     }
 

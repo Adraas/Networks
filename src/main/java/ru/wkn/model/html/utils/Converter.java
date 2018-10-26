@@ -24,16 +24,6 @@ public class Converter {
         return htmlElements;
     }
 
-    public static List<Image> selectImagesFromHtmlElements(List<Element> elements) {
-        List<Image> images = new ArrayList<>();
-        for (Element element : elements) {
-            if (element instanceof Image) {
-                images.add((Image) element);
-            }
-        }
-        return images;
-    }
-
     public static List<String> convertImagesToTheirLinks(List<Image> images) {
         List<String> links = new ArrayList<>();
         for (Image image : images) {

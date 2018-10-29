@@ -75,4 +75,8 @@ public class Connector {
     public String getUriAddress() {
         return uriAddress;
     }
+
+    public int getPort() {
+        return port;
+    }
 }

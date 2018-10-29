@@ -36,5 +36,14 @@ public class HtmlHandlerWindowController {
 
     @FXML
     private void clickOnButtonPerformCheck() {
+        if (!textFieldURL.getText().equals("")) {
+            int depth;
+            String depthAsString = textFieldDepth.getText();
+            if (depthAsString.equals("")) {
+                depth = 1;
+            } else {
+                depth = Integer.valueOf(depthAsString);
+            }
+        }
     }
 }

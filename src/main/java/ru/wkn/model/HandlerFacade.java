@@ -5,7 +5,6 @@ import org.jsoup.nodes.Document;
 import ru.wkn.model.html.handlers.HtmlPageHandler;
 import ru.wkn.model.html.page.Page;
 import ru.wkn.model.html.page.elements.Element;
-import ru.wkn.model.html.page.elements.image.Image;
 import ru.wkn.model.html.utils.Converter;
 import ru.wkn.model.http.Connector;
 import ru.wkn.model.http.RequestManager;
@@ -28,24 +27,27 @@ public class HandlerFacade {
         requestManager.setConnector(connector);
     }
 
-    public List<String> getImageLinksFrom(String place, String httpMethod) throws IOException {
+    public List<String> getImageLinksFrom(String server, String httpMethod) throws IOException {
         String uriAddress = connector.getUriAddress();
         String httpResponse = requestManager.getResponseOnHttpRequest(httpMethod);
         Page page = getPage(httpResponse);
 
-        List<Image> images = HtmlPageHandler.selectImagesFromHtmlElements(page.getElements());
+        List<Element> images;
 
-        switch (place) {
+        switch (server) {
             case "same":
-                images = HtmlPageHandler.imagesFromTheSameSite(images, uriAddress);
+                images = HtmlPageHandler.getImagesFromSiteByCondition(page, uriAddress, true);
                 break;
             case "other":
-                images = HtmlPageHandler.imagesFromTheOtherSite(images, uriAddress);
+                images = HtmlPageHandler.getImagesFromSiteByCondition(page, uriAddress, false);
                 break;
             default:
                 images = null;
         }
-        return Converter.convertImagesToTheirLinks(images);
+        if (images != null) {
+            return Converter.convertImagesToTheirLinks(images);
+        }
+        return null;
     }
 
     private Page getPage(String httpResponse) {

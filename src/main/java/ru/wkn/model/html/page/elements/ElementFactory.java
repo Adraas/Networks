@@ -1,6 +1,6 @@
 package ru.wkn.model.html.page.elements;
 
-import ru.wkn.model.html.page.elements.image.Image;
+import ru.wkn.model.html.page.elements.attributes.Attribute;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -10,8 +10,7 @@ import java.util.Set;
 public class ElementFactory {
 
     public static Element createHtmlElement(String tagName, Map<String, String> dataAttributes) {
-        return tagName.equals("img") ? new Image(htmlAttributes(dataAttributes))
-                : null;
+        return new Element(tagName, htmlAttributes(dataAttributes));
     }
 
     private static Set<Attribute> htmlAttributes(Map<String, String> dataAttributes) {
@@ -22,11 +21,8 @@ public class ElementFactory {
         Iterator<String> iterator = dataAttributes.keySet().iterator();
         for (; iterator.hasNext(); ) {
             String attributeName = iterator.next();
-            Attribute attribute = AttributeFactory
-                    .createHtmlAttribute(attributeName, dataAttributes.get(attributeName));
-            if (attribute != null) {
-                attributes.add(attribute);
-            }
+            Attribute attribute = new Attribute(attributeName, dataAttributes.get(attributeName));
+            attributes.add(attribute);
         }
         return attributes;
     }

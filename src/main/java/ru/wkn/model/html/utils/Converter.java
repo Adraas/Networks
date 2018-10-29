@@ -3,7 +3,6 @@ package ru.wkn.model.html.utils;
 import org.jsoup.select.Elements;
 import ru.wkn.model.html.page.elements.Element;
 import ru.wkn.model.html.page.elements.ElementFactory;
-import ru.wkn.model.html.page.elements.image.Image;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,19 +13,17 @@ public class Converter {
     public static List<Element> convertJsoupElementsToHtmlElements(Elements elements) {
         List<Element> htmlElements = new ArrayList<>();
         for (org.jsoup.nodes.Element element : elements) {
-            String tagName = element.tagName();
             Map<String, String> attributes = element.dataset();
+            String tagName = element.tagName();
             Element htmlElement = ElementFactory.createHtmlElement(tagName, attributes);
-            if (htmlElement != null) {
-                htmlElements.add(htmlElement);
-            }
+            htmlElements.add(htmlElement);
         }
         return htmlElements;
     }
 
-    public static List<String> convertImagesToTheirLinks(List<Image> images) {
+    public static List<String> convertImagesToTheirLinks(List<Element> images) {
         List<String> links = new ArrayList<>();
-        for (Image image : images) {
+        for (Element image : images) {
             links.add(image.getValueOfAttribute("src"));
         }
         return links;

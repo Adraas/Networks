@@ -9,21 +9,26 @@ import ru.wkn.model.http.RequestManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class HandlerFacade {
 
     private Connector connector;
     private RequestManager requestManager;
-    private String startUriAddress;
+    private Set<String> linksForVisit;
     private List<String> visitedLinks;
     private List<String> imageLinks;
 
     public HandlerFacade(Connector connector) {
         this.connector = connector;
-        startUriAddress = connector.getUriAddress();
         requestManager = new RequestManager(connector);
+
+        linksForVisit = new HashSet<>();
+        visitedLinks = new ArrayList<>();
+        imageLinks = new ArrayList<>();
     }
 
     public void setConnector(Connector connector) {
@@ -38,40 +43,81 @@ public class HandlerFacade {
     public List<String> getImageLinks(boolean isSameServer) {
         List<String> links = new ArrayList<>();
         for (String link : imageLinks) {
-            if (link.startsWith(startUriAddress) == isSameServer) {
+            if (link.startsWith((String) linksForVisit.toArray()[0]) == isSameServer) {
                 links.add(link);
             }
         }
         return links;
     }
 
-    public void initLinks(String httpMethod, int depth) throws IOException {
-        checkLists();
-
+    public void initLinks(String httpMethod, final int depth) throws IOException {
+        List<Page> pages = new ArrayList<>();
         String uriAddress = connector.getUriAddress();
         Page page = getPage(httpMethod);
+        initPages(pages, page, httpMethod, depth);
 
-        imageLinks.addAll(Converter.convertImagesToTheirLinks(getImages(uriAddress, page, true)));
-        imageLinks.addAll(Converter.convertImagesToTheirLinks(getImages(uriAddress, page, false)));
-        visitedLinks.add(connector.getUriAddress());
+        //TODO: to check links of the images
+    }
 
-        List<Page> allPages = new ArrayList<>();
-        allPages.add(page);
+    private void initPages(List<Page> pages, Page currentPage, String httpMethod, final int depth) throws IOException {
+        pages.add(currentPage);
+        List<String> linksFromCurrentPage = Converter
+                .convertElementsToTheirAttributeValues(HtmlPageHandler
+                        .selectElementsFromHtmlPage(currentPage, "a"), "href");
+        addAllLinksToSet(linksFromCurrentPage);
 
-        for (int indexDepth = 1; indexDepth < depth; indexDepth++) {
-            List<Page> currentPages = getPagesByAnchors(page, httpMethod);
-            fillListOfLinks(currentPages);
-            allPages.addAll(currentPages);
+        if (!linksFromCurrentPage.isEmpty()) {
+
+            for (String currentLink : linksFromCurrentPage) {
+
+                if (currentLink.startsWith(connector.getUriAddress())) {
+                    int newDepth = checkNewDepth(currentLink);
+
+                    if (newDepth < depth) {
+                        setConnector(new Connector(currentLink, connector.getPort()));
+                        initPages(pages, getPage(httpMethod), httpMethod, depth);
+                    }
+                }
+
+                if (currentLink.startsWith("/")) {
+                    String newLink = connector.getUriAddress().concat(currentLink);
+                    int newDepth = checkNewDepth(newLink);
+
+                    if (newDepth < depth) {
+                        setConnector(new Connector(newLink, connector.getPort()));
+                        initPages(pages, getPage(httpMethod), httpMethod, depth);
+                    }
+                }
+            }
         }
     }
 
-    private void checkLists() {
-        if (visitedLinks != null) {
-            visitedLinks = new ArrayList<>();
+    private void addAllLinksToSet(List<String> links) {
+        for (String link : links) {
+            if (!foundElementInSet(link)) {
+                linksForVisit.add(link);
+            }
         }
-        if (imageLinks != null) {
-            imageLinks = new ArrayList<>();
+    }
+
+    private boolean foundElementInSet(String linkForEqual) {
+        String[] links = (String[]) linksForVisit.toArray();
+        for (String link : links) {
+            if (link.equals(linkForEqual)) {
+                return true;
+            }
         }
+        return false;
+    }
+
+    private int checkNewDepth(String link) {
+        String[] links = (String[]) linksForVisit.toArray();
+        String currentLink;
+        int currentDepth = 1;
+        if ((currentLink = links[0]) != null) {
+            currentDepth = link.substring(currentLink.length()).split("/").length;
+        }
+        return currentDepth;
     }
 
     private Page getPage(String httpMethod) throws IOException {
@@ -90,23 +136,5 @@ public class HandlerFacade {
             images = HtmlPageHandler.getImagesFromSiteByCondition(page, uriAddress, false);
         }
         return Objects.requireNonNull(images);
-    }
-
-    private List<Page> getPagesByAnchors(Page currentPage, String httpMethod) throws IOException {
-        List<Page> pages = new ArrayList<>();
-
-        for (Element element : currentPage.getElements("a")) {
-            String href = element.getValueOfAttribute("href");
-            if (href.startsWith("/")) {
-                setConnector(new Connector(connector.getUriAddress().concat(href), connector.getPort()));
-                pages.add(getPage(httpMethod));
-                visitedLinks.add(connector.getUriAddress());
-            }
-        }
-        return pages;
-    }
-
-    private void fillListOfLinks(List<Page> pages) {
-        // some instructions
     }
 }

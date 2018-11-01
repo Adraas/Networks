@@ -25,10 +25,10 @@ public class Converter {
         return htmlElements;
     }
 
-    public static List<String> convertImagesToTheirLinks(List<Element> images) {
+    public static List<String> convertElementsToTheirAttributeValues(List<Element> elements, String attributeName) {
         List<String> links = new ArrayList<>();
-        for (Element image : images) {
-            links.add(image.getValueOfAttribute("src"));
+        for (Element element : elements) {
+            links.add(element.getValueOfAttribute(attributeName));
         }
         return links;
     }

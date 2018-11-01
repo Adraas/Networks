@@ -18,16 +18,14 @@ public class HandlerFacade {
 
     private Connector connector;
     private RequestManager requestManager;
-    private Set<String> linksForVisit;
-    private List<String> visitedLinks;
+    private Set<String> visitedLinks;
     private List<String> imageLinks;
 
     public HandlerFacade(Connector connector) {
         this.connector = connector;
         requestManager = new RequestManager(connector);
 
-        linksForVisit = new HashSet<>();
-        visitedLinks = new ArrayList<>();
+        visitedLinks = new HashSet<>();
         imageLinks = new ArrayList<>();
     }
 
@@ -36,14 +34,14 @@ public class HandlerFacade {
         requestManager.setConnector(connector);
     }
 
-    public List<String> getVisitedLinks() {
+    public Set<String> getVisitedLinks() {
         return visitedLinks;
     }
 
     public List<String> getImageLinks(boolean isSameServer) {
         List<String> links = new ArrayList<>();
         for (String link : imageLinks) {
-            if (link.startsWith((String) linksForVisit.toArray()[0]) == isSameServer) {
+            if (link.startsWith((String) visitedLinks.toArray()[0]) == isSameServer) {
                 links.add(link);
             }
         }
@@ -52,11 +50,18 @@ public class HandlerFacade {
 
     public void initLinks(String httpMethod, final int depth) throws IOException {
         List<Page> pages = new ArrayList<>();
-        String uriAddress = connector.getUriAddress();
         Page page = getPage(httpMethod);
-        initPages(pages, page, httpMethod, depth);
 
-        //TODO: to check links of the images
+        initPages(pages, page, httpMethod, depth);
+        fillImagesLinksList(pages);
+    }
+
+    private void fillImagesLinksList(List<Page> pages) {
+        for (Page page : pages) {
+            imageLinks.addAll(Converter
+                    .convertElementsToTheirAttributeValues(HtmlPageHandler
+                            .selectElementsFromHtmlPage(page, "img"), "src"));
+        }
     }
 
     private void initPages(List<Page> pages, Page currentPage, String httpMethod, final int depth) throws IOException {
@@ -95,14 +100,13 @@ public class HandlerFacade {
     private void addAllLinksToSet(List<String> links) {
         for (String link : links) {
             if (!foundElementInSet(link)) {
-                linksForVisit.add(link);
+                visitedLinks.add(link);
             }
         }
     }
 
     private boolean foundElementInSet(String linkForEqual) {
-        String[] links = (String[]) linksForVisit.toArray();
-        for (String link : links) {
+        for (String link : visitedLinks) {
             if (link.equals(linkForEqual)) {
                 return true;
             }
@@ -111,10 +115,10 @@ public class HandlerFacade {
     }
 
     private int checkNewDepth(String link) {
-        String[] links = (String[]) linksForVisit.toArray();
+        Object[] links = visitedLinks.toArray();
         String currentLink;
         int currentDepth = 1;
-        if ((currentLink = links[0]) != null) {
+        if ((currentLink = String.valueOf(links[0])) != null) {
             currentDepth = link.substring(currentLink.length()).split("/").length;
         }
         return currentDepth;

@@ -43,12 +43,12 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
-                <TextField fx:id="textFieldURL" promptText="Только для http-соединений" GridPane.columnIndex="1"/>
+                <TextField fx:id="textFieldURI" promptText="Только для http-соединений" GridPane.columnIndex="1"/>
                 <TextField fx:id="textFieldDepth" promptText="Задумайся о скорости" GridPane.columnIndex="1"
                            GridPane.rowIndex="1"/>
                 <Label text="URL:"/>
                 <Label text="Глубина проверки:" GridPane.rowIndex="1"/>
-                <Button fx:id="buttonPerformCheck" mnemonicParsing="false" onAction="#clickOnButtonPerformCheck"
+                <Button mnemonicParsing="false" onAction="#clickOnButtonPerformCheck"
                         prefHeight="25.0" prefWidth="177.0" text="Выполнить проверку" GridPane.columnIndex="1"
                         GridPane.rowIndex="2"/>
             </children>

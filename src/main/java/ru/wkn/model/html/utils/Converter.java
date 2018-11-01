@@ -1,12 +1,16 @@
 package ru.wkn.model.html.utils;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import ru.wkn.model.html.page.elements.Element;
 import ru.wkn.model.html.page.elements.ElementFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +21,13 @@ public class Converter {
         Elements elements = document.getAllElements();
         List<Element> htmlElements = new ArrayList<>();
         for (org.jsoup.nodes.Element element : elements) {
-            Map<String, String> attributes = element.dataset();
+            Map<String, String> attributes = new HashMap<>();
+            Attributes jsoupAttributes = element.attributes();
+            Iterator<Attribute> iterator = jsoupAttributes.iterator();
+            for (; iterator.hasNext(); ) {
+                Attribute jsoupAttribute = iterator.next();
+                attributes.put(jsoupAttribute.getKey(), jsoupAttribute.getValue());
+            }
             String tagName = element.tagName();
             Element htmlElement = ElementFactory.createHtmlElement(tagName, attributes);
             htmlElements.add(htmlElement);

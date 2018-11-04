@@ -2,18 +2,22 @@ package ru.wkn.model;
 
 import ru.wkn.model.html.handlers.HtmlPageHandler;
 import ru.wkn.model.html.page.Page;
-import ru.wkn.model.html.page.elements.Element;
 import ru.wkn.model.html.utils.Converter;
 import ru.wkn.model.http.Connector;
 import ru.wkn.model.http.RequestManager;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class HandlerFacade {
 
     private Connector connector;
     private RequestManager requestManager;
+
+    private List<Page> pages;
     private Map<String, Boolean> linksForVisit;
     private List<String> visitedLinks;
     private List<String> imageLinks;
@@ -22,9 +26,9 @@ public class HandlerFacade {
         this.connector = connector;
         requestManager = new RequestManager(connector);
 
+        pages = new ArrayList<>();
         linksForVisit = new HashMap<>();
         visitedLinks = new ArrayList<>();
-        imageLinks = new ArrayList<>();
     }
 
     public void setConnector(Connector connector) {
@@ -37,22 +41,39 @@ public class HandlerFacade {
     }
 
     public List<String> getImageLinks(boolean isSameServer) {
-        List<String> links = new ArrayList<>();
-        for (String link : imageLinks) {
-            if (link.startsWith((String) linksForVisit.keySet().toArray()[0]) == isSameServer) {
-                links.add(link);
-            }
+        imageLinks = new ArrayList<>();
+        fillImagesLinksList(isSameServer);
+        return imageLinks;
+    }
+
+    private void fillImagesLinksList(boolean isSameServer) {
+        int iterations = pages.size();
+        for (int i = 0; i < iterations; i++) {
+            imageLinks.addAll(getImageLinks(pages.get(i), visitedLinks.get(i), isSameServer));
         }
-        return links;
+    }
+
+    private List<String> getImageLinks(Page page, String uriAddress, boolean isSameServer) {
+        List<String> images;
+
+        if (isSameServer) {
+            images = Converter
+                    .convertElementsToTheirAttributeValues(HtmlPageHandler
+                            .getImagesFromSiteByCondition(page, uriAddress, true), "src");
+
+        } else {
+            images = Converter
+                    .convertElementsToTheirAttributeValues(HtmlPageHandler
+                            .getImagesFromSiteByCondition(page, uriAddress, false), "src");
+        }
+        return images;
     }
 
     public void initLinks(String httpMethod, final int depth) throws IOException {
-        List<Page> pages = new ArrayList<>();
         Page page = getPage(httpMethod);
 
-        initPages(pages, page, httpMethod, depth);
+        initPages(page, httpMethod, depth);
         fillVisitedLinksList();
-        fillImagesLinksList(pages);
     }
 
     private void fillVisitedLinksList() {
@@ -63,20 +84,13 @@ public class HandlerFacade {
         }
     }
 
-    private void fillImagesLinksList(List<Page> pages) {
-        for (Page page : pages) {
-            imageLinks.addAll(Converter
-                    .convertElementsToTheirAttributeValues(HtmlPageHandler
-                            .selectElementsFromHtmlPage(page, "img"), "src"));
-        }
-    }
-
-    private void initPages(List<Page> pages, Page currentPage, String httpMethod, final int depth) throws IOException {
-        pages.add(currentPage);
+    private void initPages(Page currentPage, String httpMethod, final int depth) throws IOException {
         List<String> linksFromCurrentPage = Converter
                 .convertElementsToTheirAttributeValues(HtmlPageHandler
                         .selectElementsFromHtmlPage(currentPage, "a"), "href");
-        addAllLinksToCollection(linksFromCurrentPage);
+
+        addLinksToCollectionForVisit(linksFromCurrentPage);
+        pages.add(currentPage);
 
         if (!linksFromCurrentPage.isEmpty()) {
 
@@ -87,24 +101,24 @@ public class HandlerFacade {
 
                     if (newDepth < depth) {
                         setConnector(new Connector(currentLink, connector.getPort()));
-                        initPages(pages, getPage(httpMethod), httpMethod, depth);
+                        initPages(getPage(httpMethod), httpMethod, depth);
                     }
                 }
 
                 if (currentLink.startsWith("/")) {
-                    String newLink = connector.getUriAddress().concat(currentLink);
-                    int newDepth = checkNewDepth(newLink);
+                    String fullCurrentLink = connector.getUriAddress().concat(currentLink);
+                    int newDepth = checkNewDepth(fullCurrentLink);
 
                     if (newDepth < depth) {
-                        setConnector(new Connector(newLink, connector.getPort()));
-                        initPages(pages, getPage(httpMethod), httpMethod, depth);
+                        setConnector(new Connector(fullCurrentLink, connector.getPort()));
+                        initPages(getPage(httpMethod), httpMethod, depth);
                     }
                 }
             }
         }
     }
 
-    private void addAllLinksToCollection(List<String> links) {
+    private void addLinksToCollectionForVisit(List<String> links) {
         for (String link : links) {
             if (!foundElementInSet(link)) {
                 linksForVisit.put(link, false);
@@ -133,19 +147,6 @@ public class HandlerFacade {
 
     private Page getPage(String httpMethod) throws IOException {
         String httpResponse = requestManager.getResponseOnHttpRequest(httpMethod);
-        List<Element> elements = Converter.convertJsoupElementsToHtmlElements(httpResponse);
-        return new Page(elements);
-    }
-
-    private List<Element> getImages(String uriAddress, Page page, boolean isSameServer) {
-        List<Element> images;
-
-        if (isSameServer) {
-            images = HtmlPageHandler.getImagesFromSiteByCondition(page, uriAddress, true);
-
-        } else {
-            images = HtmlPageHandler.getImagesFromSiteByCondition(page, uriAddress, false);
-        }
-        return Objects.requireNonNull(images);
+        return new Page(Converter.convertJsoupElementsToHtmlElements(httpResponse));
     }
 }

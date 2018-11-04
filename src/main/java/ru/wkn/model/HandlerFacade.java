@@ -8,24 +8,22 @@ import ru.wkn.model.http.Connector;
 import ru.wkn.model.http.RequestManager;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class HandlerFacade {
 
     private Connector connector;
     private RequestManager requestManager;
-    private Set<String> visitedLinks;
+    private Map<String, Boolean> linksForVisit;
+    private List<String> visitedLinks;
     private List<String> imageLinks;
 
     public HandlerFacade(Connector connector) {
         this.connector = connector;
         requestManager = new RequestManager(connector);
 
-        visitedLinks = new HashSet<>();
+        linksForVisit = new HashMap<>();
+        visitedLinks = new ArrayList<>();
         imageLinks = new ArrayList<>();
     }
 
@@ -34,14 +32,14 @@ public class HandlerFacade {
         requestManager.setConnector(connector);
     }
 
-    public Set<String> getVisitedLinks() {
+    public List<String> getVisitedLinks() {
         return visitedLinks;
     }
 
     public List<String> getImageLinks(boolean isSameServer) {
         List<String> links = new ArrayList<>();
         for (String link : imageLinks) {
-            if (link.startsWith((String) visitedLinks.toArray()[0]) == isSameServer) {
+            if (link.startsWith((String) linksForVisit.keySet().toArray()[0]) == isSameServer) {
                 links.add(link);
             }
         }
@@ -53,7 +51,16 @@ public class HandlerFacade {
         Page page = getPage(httpMethod);
 
         initPages(pages, page, httpMethod, depth);
+        fillVisitedLinksList();
         fillImagesLinksList(pages);
+    }
+
+    private void fillVisitedLinksList() {
+        for (String link : linksForVisit.keySet()) {
+            if (linksForVisit.get(link)) {
+                visitedLinks.add(link);
+            }
+        }
     }
 
     private void fillImagesLinksList(List<Page> pages) {
@@ -69,7 +76,7 @@ public class HandlerFacade {
         List<String> linksFromCurrentPage = Converter
                 .convertElementsToTheirAttributeValues(HtmlPageHandler
                         .selectElementsFromHtmlPage(currentPage, "a"), "href");
-        addAllLinksToSet(linksFromCurrentPage);
+        addAllLinksToCollection(linksFromCurrentPage);
 
         if (!linksFromCurrentPage.isEmpty()) {
 
@@ -97,16 +104,16 @@ public class HandlerFacade {
         }
     }
 
-    private void addAllLinksToSet(List<String> links) {
+    private void addAllLinksToCollection(List<String> links) {
         for (String link : links) {
             if (!foundElementInSet(link)) {
-                visitedLinks.add(link);
+                linksForVisit.put(link, false);
             }
         }
     }
 
     private boolean foundElementInSet(String linkForEqual) {
-        for (String link : visitedLinks) {
+        for (String link : linksForVisit.keySet()) {
             if (link.equals(linkForEqual)) {
                 return true;
             }
@@ -115,7 +122,7 @@ public class HandlerFacade {
     }
 
     private int checkNewDepth(String link) {
-        Object[] links = visitedLinks.toArray();
+        Object[] links = linksForVisit.keySet().toArray();
         String currentLink;
         int currentDepth = 1;
         if ((currentLink = String.valueOf(links[0])) != null) {

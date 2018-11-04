@@ -10,17 +10,16 @@ public class HtmlPageHandler {
 
     public static List<Element> getImagesFromSiteByCondition(Page page, String uriAddress, boolean isSameServer) {
         List<Element> htmlImages = page.getElements("img");
+        List<Element> images = new ArrayList<>();
         if (htmlImages != null) {
-            List<Element> imagesFromTheSameSite = new ArrayList<>();
             for (Element currentImage : htmlImages) {
                 String currentHrefToLowerCase = currentImage.getValueOfAttribute("src").toLowerCase();
                 if (currentHrefToLowerCase.startsWith(uriAddress.toLowerCase()) == isSameServer) {
-                    imagesFromTheSameSite.add(currentImage);
+                    images.add(currentImage);
                 }
             }
-            return imagesFromTheSameSite;
         }
-        return null;
+        return images;
     }
 
     public static List<Element> selectElementsFromHtmlPage(Page page, String tagName) {

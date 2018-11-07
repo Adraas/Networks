@@ -17,7 +17,8 @@ public class HandlerFacade {
     private Connector connector;
     private RequestManager requestManager;
 
-    private List<Page> pages;
+    private String startUriAddress;
+    private Map<String, Page> pages;
     private Map<String, Boolean> linksForVisit;
     private List<String> visitedLinks;
     private List<String> imageLinks;
@@ -26,7 +27,7 @@ public class HandlerFacade {
         this.connector = connector;
         requestManager = new RequestManager(connector);
 
-        pages = new ArrayList<>();
+        pages = new HashMap<>();
         linksForVisit = new HashMap<>();
         visitedLinks = new ArrayList<>();
     }
@@ -47,30 +48,34 @@ public class HandlerFacade {
     }
 
     private void fillImagesLinksList(boolean isSameServer) {
-        int iterations = pages.size();
-        for (int i = 0; i < iterations; i++) {
-            imageLinks.addAll(getImageLinks(pages.get(i), visitedLinks.get(i), isSameServer));
+        for (String visitedLink : visitedLinks) {
+            Page currentPage = pages.get(visitedLink);
+            if (currentPage != null) {
+                imageLinks.addAll(getImageLinks(currentPage, isSameServer));
+            }
         }
     }
 
-    private List<String> getImageLinks(Page page, String uriAddress, boolean isSameServer) {
+    private List<String> getImageLinks(Page page, boolean isSameServer) {
         List<String> images;
 
         if (isSameServer) {
             images = Converter
                     .convertElementsToTheirAttributeValues(HtmlPageHandler
-                            .getImagesFromSiteByCondition(page, uriAddress, true), "src");
+                            .getImagesFromSiteByCondition(page, true), "src");
 
         } else {
             images = Converter
                     .convertElementsToTheirAttributeValues(HtmlPageHandler
-                            .getImagesFromSiteByCondition(page, uriAddress, false), "src");
+                            .getImagesFromSiteByCondition(page, false), "src");
         }
         return images;
     }
 
     public void initLinks(String httpMethod, final int depth) throws IOException {
         Page page = getPage(httpMethod);
+        startUriAddress = connector.getUriAddress();
+        linksForVisit.put(startUriAddress, true);
 
         initPages(page, httpMethod, depth);
         fillVisitedLinksList();
@@ -90,28 +95,31 @@ public class HandlerFacade {
                         .selectElementsFromHtmlPage(currentPage, "a"), "href");
 
         addLinksToCollectionForVisit(linksFromCurrentPage);
-        pages.add(currentPage);
+        String uriAddress = connector.getUriAddress();
+        pages.put(uriAddress, currentPage);
 
         if (!linksFromCurrentPage.isEmpty()) {
 
             for (String currentLink : linksFromCurrentPage) {
 
-                if (currentLink.startsWith(connector.getUriAddress())) {
+                if (currentLink.startsWith(uriAddress)) {
                     int newDepth = checkNewDepth(currentLink);
 
                     if (newDepth < depth) {
                         setConnector(new Connector(currentLink, connector.getPort()));
                         initPages(getPage(httpMethod), httpMethod, depth);
+                        linksForVisit.replace(currentLink, true);
                     }
                 }
 
                 if (currentLink.startsWith("/")) {
-                    String fullCurrentLink = connector.getUriAddress().concat(currentLink);
+                    String fullCurrentLink = uriAddress.concat(currentLink);
                     int newDepth = checkNewDepth(fullCurrentLink);
 
                     if (newDepth < depth) {
                         setConnector(new Connector(fullCurrentLink, connector.getPort()));
                         initPages(getPage(httpMethod), httpMethod, depth);
+                        linksForVisit.replace(currentLink, true);
                     }
                 }
             }
@@ -136,11 +144,9 @@ public class HandlerFacade {
     }
 
     private int checkNewDepth(String link) {
-        Object[] links = linksForVisit.keySet().toArray();
-        String currentLink;
         int currentDepth = 1;
-        if ((currentLink = String.valueOf(links[0])) != null) {
-            currentDepth = link.substring(currentLink.length()).split("/").length;
+        if (startUriAddress != null) {
+            currentDepth += link.substring(startUriAddress.length()).split("/").length;
         }
         return currentDepth;
     }

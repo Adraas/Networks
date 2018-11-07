@@ -8,13 +8,13 @@ import java.util.List;
 
 public class HtmlPageHandler {
 
-    public static List<Element> getImagesFromSiteByCondition(Page page, String uriAddress, boolean isSameServer) {
+    public static List<Element> getImagesFromSiteByCondition(Page page, boolean isSameServer) {
         List<Element> htmlImages = page.getElements("img");
         List<Element> images = new ArrayList<>();
         if (htmlImages != null) {
             for (Element currentImage : htmlImages) {
                 String currentHrefToLowerCase = currentImage.getValueOfAttribute("src").toLowerCase();
-                if (currentHrefToLowerCase.startsWith(uriAddress.toLowerCase()) == isSameServer) {
+                if (currentHrefToLowerCase.startsWith("/") == isSameServer) {
                     images.add(currentImage);
                 }
             }

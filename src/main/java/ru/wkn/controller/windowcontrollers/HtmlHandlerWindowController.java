@@ -1,8 +1,8 @@
 package ru.wkn.controller.windowcontrollers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import ru.wkn.model.HandlerFacade;
 import ru.wkn.model.http.Connector;
@@ -12,11 +12,9 @@ import java.io.IOException;
 public class HtmlHandlerWindowController {
 
     @FXML
-    private MenuItem menuItemExit;
-    @FXML
-    private MenuItem menuItemAbout;
-    @FXML
     private TextField textFieldURI;
+    @FXML
+    private TextField textFieldPort;
     @FXML
     private TextField textFieldDepth;
     @FXML
@@ -34,11 +32,22 @@ public class HtmlHandlerWindowController {
 
     @FXML
     private void clickOnMenuItemAbout() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("HTML-Handler");
+        alert.setHeaderText("Информация о программе и авторе");
+        alert.setContentText("Задачи:\n"
+                .concat("-Вывести список ссылок просмотренных страниц;\n")
+                .concat("-Вывести список ссылок изображений текущего сервера;\n")
+                .concat("-Вывести список ссылок изображений внешних серверов.\n\n")
+                .concat("Автор: Пикалов Артем\n")
+                .concat("Группа: 6302-090301D"));
+        alert.show();
     }
 
     @FXML
     private void clickOnButtonPerformCheck() {
         String uriAddress = textFieldURI.getText();
+        int port = Integer.valueOf(textFieldPort.getText());
         if (!uriAddress.equals("")) {
             int depth;
             String depthAsString = textFieldDepth.getText();
@@ -47,7 +56,7 @@ public class HtmlHandlerWindowController {
             } else {
                 depth = Integer.valueOf(depthAsString);
             }
-            handlerFacade = new HandlerFacade(new Connector(uriAddress, 80));
+            handlerFacade = new HandlerFacade(new Connector(uriAddress, port));
             try {
                 handlerFacade.initLinks("GET", depth);
             } catch (IOException e) {
@@ -59,7 +68,16 @@ public class HtmlHandlerWindowController {
     }
 
     private void fillListsOfView() {
+        clearContainers();
+
         listViewVisitedAddresses.getItems().addAll(handlerFacade.getVisitedLinks());
-        // some instructions
+        listViewCurrentDNS.getItems().addAll(handlerFacade.getImageLinks(true));
+        listViewExternalDNS.getItems().addAll(handlerFacade.getImageLinks(false));
+    }
+
+    private void clearContainers() {
+        listViewVisitedAddresses.getItems().clear();
+        listViewCurrentDNS.getItems().clear();
+        listViewExternalDNS.getItems().clear();
     }
 }

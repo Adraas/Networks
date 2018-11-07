@@ -20,13 +20,13 @@
             <menus>
                 <Menu mnemonicParsing="false" text="Файл">
                     <items>
-                        <MenuItem fx:id="menuItemExit" mnemonicParsing="false" onAction="#clickOnMenuItemExit"
+                        <MenuItem mnemonicParsing="false" onAction="#clickOnMenuItemExit"
                                   text="Выход"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Помощь">
                     <items>
-                        <MenuItem fx:id="menuItemAbout" mnemonicParsing="false" onAction="#clickOnMenuItemAbout"
+                        <MenuItem mnemonicParsing="false" onAction="#clickOnMenuItemAbout"
                                   text="О программе"/>
                     </items>
                 </Menu>
@@ -41,16 +41,19 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
                 <TextField fx:id="textFieldURI" promptText="Только для http-соединений" GridPane.columnIndex="1"/>
-                <TextField fx:id="textFieldDepth" promptText="Задумайся о скорости" GridPane.columnIndex="1"
+                <TextField fx:id="textFieldPort" promptText="Например, 80" GridPane.columnIndex="1"
                            GridPane.rowIndex="1"/>
+                <TextField fx:id="textFieldDepth" promptText="Задумайся о скорости" GridPane.columnIndex="1"
+                           GridPane.rowIndex="2"/>
                 <Label text="URL:"/>
-                <Label text="Глубина проверки:" GridPane.rowIndex="1"/>
-                <Button mnemonicParsing="false" onAction="#clickOnButtonPerformCheck"
-                        prefHeight="25.0" prefWidth="177.0" text="Выполнить проверку" GridPane.columnIndex="1"
-                        GridPane.rowIndex="2"/>
+                <Label text="Порт:" GridPane.rowIndex="1"/>
+                <Label text="Глубина проверки:" GridPane.rowIndex="2"/>
+                <Button mnemonicParsing="false" onAction="#clickOnButtonPerformCheck" prefHeight="25.0"
+                        prefWidth="177.0" text="Выполнить проверку" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
             </children>
         </GridPane>
         <GridPane layoutX="14.0" layoutY="190.0" prefHeight="193.0" prefWidth="286.0">

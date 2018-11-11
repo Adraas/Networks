@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class HandlerFacade {
 
@@ -82,7 +83,8 @@ public class HandlerFacade {
     }
 
     private void fillVisitedLinksList() {
-        for (String link : linksForVisit.keySet()) {
+        Set<String> links = linksForVisit.keySet();
+        for (String link : links) {
             if (linksForVisit.get(link)) {
                 visitedLinks.add(link);
             }
@@ -135,7 +137,8 @@ public class HandlerFacade {
     }
 
     private boolean foundElementInSet(String linkForEqual) {
-        for (String link : linksForVisit.keySet()) {
+        Set<String> links = linksForVisit.keySet();
+        for (String link : links) {
             if (link.equals(linkForEqual)) {
                 return true;
             }

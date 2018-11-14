@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class HandlerFacade {
 
@@ -20,7 +19,6 @@ public class HandlerFacade {
 
     private String startUriAddress;
     private Map<String, Page> pages;
-    private Map<String, Boolean> linksForVisit;
     private List<String> visitedLinks;
     private List<String> imageLinks;
 
@@ -29,7 +27,6 @@ public class HandlerFacade {
         requestManager = new RequestManager(connector);
 
         pages = new HashMap<>();
-        linksForVisit = new HashMap<>();
         visitedLinks = new ArrayList<>();
     }
 
@@ -76,19 +73,9 @@ public class HandlerFacade {
     public void initLinks(String httpMethod, final int depth) throws IOException {
         Page page = getPage(httpMethod);
         startUriAddress = connector.getUriAddress();
-        linksForVisit.put(startUriAddress, true);
+        visitedLinks.add(startUriAddress);
 
         initPages(page, httpMethod, depth);
-        fillVisitedLinksList();
-    }
-
-    private void fillVisitedLinksList() {
-        Set<String> links = linksForVisit.keySet();
-        for (String link : links) {
-            if (linksForVisit.get(link)) {
-                visitedLinks.add(link);
-            }
-        }
     }
 
     private void initPages(Page currentPage, String httpMethod, final int depth) throws IOException {
@@ -96,7 +83,6 @@ public class HandlerFacade {
                 .convertElementsToTheirAttributeValues(HtmlPageHandler
                         .selectElementsFromHtmlPage(currentPage, "a"), "href");
 
-        addLinksToCollectionForVisit(linksFromCurrentPage);
         String uriAddress = connector.getUriAddress();
         pages.put(uriAddress, currentPage);
 
@@ -104,52 +90,45 @@ public class HandlerFacade {
 
             for (String currentLink : linksFromCurrentPage) {
 
-                if (currentLink.startsWith(uriAddress)) {
-                    int newDepth = checkNewDepth(currentLink);
+                if (currentLink.length() > 1) {
+                    if (currentLink.startsWith(uriAddress)) {
+                        int newDepth = checkNewDepth(currentLink);
 
-                    if (newDepth < depth) {
-                        setConnector(new Connector(currentLink, connector.getPort()));
-                        initPages(getPage(httpMethod), httpMethod, depth);
-                        linksForVisit.replace(currentLink, true);
+                        if (newDepth < depth && notFoundElementInList(currentLink)) {
+                            setConnector(new Connector(currentLink, connector.getPort()));
+                            initPages(getPage(httpMethod), httpMethod, depth);
+                            visitedLinks.add(currentLink);
+                        }
                     }
-                }
+                    if (currentLink.startsWith("/")) {
+                        String fullCurrentLink = uriAddress.concat(currentLink);
+                        int newDepth = checkNewDepth(fullCurrentLink);
 
-                if (currentLink.startsWith("/")) {
-                    String fullCurrentLink = uriAddress.concat(currentLink);
-                    int newDepth = checkNewDepth(fullCurrentLink);
-
-                    if (newDepth < depth) {
-                        setConnector(new Connector(fullCurrentLink, connector.getPort()));
-                        initPages(getPage(httpMethod), httpMethod, depth);
-                        linksForVisit.replace(currentLink, true);
+                        if (newDepth < depth && notFoundElementInList(currentLink)) {
+                            setConnector(new Connector(fullCurrentLink, connector.getPort()));
+                            initPages(getPage(httpMethod), httpMethod, depth);
+                            visitedLinks.add(fullCurrentLink);
+                        }
                     }
                 }
             }
         }
     }
 
-    private void addLinksToCollectionForVisit(List<String> links) {
-        for (String link : links) {
-            if (!foundElementInSet(link)) {
-                linksForVisit.put(link, false);
-            }
-        }
-    }
-
-    private boolean foundElementInSet(String linkForEqual) {
-        Set<String> links = linksForVisit.keySet();
-        for (String link : links) {
+    private boolean notFoundElementInList(String linkForEqual) {
+        for (String link : visitedLinks) {
             if (link.equals(linkForEqual)) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     private int checkNewDepth(String link) {
         int currentDepth = 1;
         if (startUriAddress != null) {
-            currentDepth += link.substring(startUriAddress.length()).split("/").length;
+            int length = link.substring(startUriAddress.length()).split("/").length;
+            currentDepth += length > 0 ? length : 0;
         }
         return currentDepth;
     }

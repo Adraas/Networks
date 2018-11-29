@@ -1,7 +1,8 @@
 package ru.wkn.model;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import ru.wkn.model.html.handlers.HtmlPageHandler;
-import ru.wkn.model.html.page.Page;
 import ru.wkn.model.html.utils.Converter;
 import ru.wkn.model.http.Connector;
 import ru.wkn.model.http.RequestManager;
@@ -18,7 +19,7 @@ public class HandlerFacade {
     private RequestManager requestManager;
 
     private String startUriAddress;
-    private Map<String, Page> pages;
+    private Map<String, Document> pages;
     private List<String> visitedLinks;
     private List<String> imageLinks;
 
@@ -41,37 +42,37 @@ public class HandlerFacade {
 
     private void fillImagesLinksList(boolean isSameServer) {
         for (String visitedLink : visitedLinks) {
-            Page currentPage = pages.get(visitedLink);
+            Document currentPage = pages.get(visitedLink);
             if (currentPage != null) {
                 imageLinks.addAll(getImageLinks(currentPage, visitedLink, isSameServer));
             }
         }
     }
 
-    private List<String> getImageLinks(Page page, String uriAddress, boolean isSameServer) {
+    private List<String> getImageLinks(Document page, String uriAddress, boolean isSameServer) {
         List<String> images;
         if (isSameServer) {
             images = Converter
                     .convertElementsToTheirAttributeValues(HtmlPageHandler
-                            .getImagesFromSiteByCondition(page, uriAddress, true), "src");
+                            .getImagesFromSiteByCondition(page, simpleStartUriAddress(uriAddress), true), "src");
 
         } else {
             images = Converter
                     .convertElementsToTheirAttributeValues(HtmlPageHandler
-                            .getImagesFromSiteByCondition(page, uriAddress, false), "src");
+                            .getImagesFromSiteByCondition(page, simpleStartUriAddress(uriAddress), false), "src");
         }
         return images;
     }
 
     public void initLinks(String httpMethod, final int depth) throws IOException {
         startUriAddress = connector.getUriAddress();
-        Page page = getPage(startUriAddress, httpMethod);
+        Document page = getPage(startUriAddress, httpMethod);
         visitedLinks.add(startUriAddress);
 
         initPages(page, httpMethod, depth);
     }
 
-    private void initPages(Page currentPage, String httpMethod, final int depth) throws IOException {
+    private void initPages(Document currentPage, String httpMethod, final int depth) throws IOException {
         List<String> linksFromCurrentPage = Converter
                 .convertElementsToTheirAttributeValues(HtmlPageHandler
                         .selectElementsFromHtmlPage(currentPage, "a"), "href");
@@ -109,6 +110,11 @@ public class HandlerFacade {
         return uriAddress;
     }
 
+    private String simpleStartUriAddress(String uriAddress) {
+        return uriAddress.substring(0, 7)
+                .concat(uriAddress.substring(7, uriAddress.substring(7).split("/")[0].length() + 7));
+    }
+
     private boolean notFoundElementInList(String linkForEqual) {
         for (String link : visitedLinks) {
             if (link.equals(linkForEqual)) {
@@ -127,10 +133,10 @@ public class HandlerFacade {
         return currentDepth;
     }
 
-    private Page getPage(String uriAddress, String httpMethod) throws IOException {
+    private Document getPage(String uriAddress, String httpMethod) throws IOException {
         connector = new Connector(uriAddress, connector.getPort());
         requestManager.setConnector(connector);
         String httpResponse = requestManager.getResponseOnHttpRequest(httpMethod);
-        return new Page(Converter.convertJsoupElementsToHtmlElements(httpResponse));
+        return Jsoup.parse(httpResponse);
     }
 }

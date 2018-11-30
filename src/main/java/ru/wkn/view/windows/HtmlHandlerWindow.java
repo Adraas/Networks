@@ -11,7 +11,7 @@ import java.io.IOException;
 public class HtmlHandlerWindow extends Window {
 
     public void windowInitialization(String windowTitle, int windowWidth, int windowHeight) throws IOException {
-        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/fxml/HtmlHandlerWindow.fxml"));
+        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/fxml/html-handler-window.fxml"));
         Stage stage = new Stage();
         stage.setScene(new Scene(anchorPane, windowWidth, windowHeight));
         stage.setResizable(false);

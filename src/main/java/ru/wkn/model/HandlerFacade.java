@@ -54,12 +54,12 @@ public class HandlerFacade {
         if (isSameServer) {
             images = Converter
                     .convertElementsToTheirAttributeValues(HtmlPageHandler
-                            .getImagesFromSiteByCondition(page, simpleStartUriAddress(uriAddress), true), "src");
+                            .getImagesFromSiteByCondition(page, simpleHomeUriAddress(uriAddress), true), "src");
 
         } else {
             images = Converter
                     .convertElementsToTheirAttributeValues(HtmlPageHandler
-                            .getImagesFromSiteByCondition(page, simpleStartUriAddress(uriAddress), false), "src");
+                            .getImagesFromSiteByCondition(page, simpleHomeUriAddress(uriAddress), false), "src");
         }
         return images;
     }
@@ -110,7 +110,7 @@ public class HandlerFacade {
         return uriAddress;
     }
 
-    private String simpleStartUriAddress(String uriAddress) {
+    private String simpleHomeUriAddress(String uriAddress) {
         return uriAddress.substring(0, 7)
                 .concat(uriAddress.substring(7, uriAddress.substring(7).split("/")[0].length() + 7));
     }

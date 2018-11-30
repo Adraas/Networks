@@ -20,19 +20,17 @@
             <menus>
                 <Menu mnemonicParsing="false" text="Файл">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#clickOnMenuItemExit"
-                                  text="Выход"/>
+                        <MenuItem mnemonicParsing="false" onAction="#clickOnMenuItemExit" text="Выход"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Помощь">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#clickOnMenuItemAbout"
-                                  text="О программе"/>
+                        <MenuItem mnemonicParsing="false" onAction="#clickOnMenuItemAbout" text="О программе"/>
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
-        <GridPane layoutX="14.0" layoutY="53.0" prefHeight="126.0" prefWidth="286.0">
+        <GridPane layoutX="14.0" layoutY="70.0" prefHeight="125.0" prefWidth="286.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="122.0" minWidth="10.0" prefWidth="94.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="177.0" minWidth="10.0" prefWidth="177.0"/>
@@ -44,10 +42,10 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
-                <TextField fx:id="textFieldURI" promptText="Только для http-соединений" GridPane.columnIndex="1"/>
+                <TextField fx:id="textFieldURI" promptText="Только http-протокол" GridPane.columnIndex="1"/>
                 <TextField fx:id="textFieldPort" promptText="Например, 80" GridPane.columnIndex="1"
                            GridPane.rowIndex="1"/>
-                <TextField fx:id="textFieldDepth" promptText="Задумайся о скорости" GridPane.columnIndex="1"
+                <TextField fx:id="textFieldDepth" promptText="Влияние на скорость" GridPane.columnIndex="1"
                            GridPane.rowIndex="2"/>
                 <Label text="URL:"/>
                 <Label text="Порт:" GridPane.rowIndex="1"/>
@@ -56,34 +54,34 @@
                         prefWidth="177.0" text="Выполнить проверку" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
             </children>
         </GridPane>
-        <GridPane layoutX="14.0" layoutY="190.0" prefHeight="193.0" prefWidth="286.0">
+        <GridPane layoutX="14.0" layoutY="186.0" prefHeight="197.0" prefWidth="286.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="97.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES"/>
-                <RowConstraints maxHeight="185.0" minHeight="10.0" prefHeight="154.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="97.0" minHeight="10.0" prefHeight="44.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="185.0" minHeight="10.0" prefHeight="153.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
                 <Label text="Посещенные адреса:"/>
                 <ListView fx:id="listViewVisitedAddresses" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1"/>
             </children>
         </GridPane>
-        <GridPane layoutX="312.0" layoutY="53.0" prefHeight="330.0" prefWidth="275.0">
+        <GridPane layoutX="312.0" layoutY="44.0" prefHeight="339.0" prefWidth="275.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints maxHeight="78.0" minHeight="0.0" prefHeight="27.0" vgrow="SOMETIMES"/>
                 <RowConstraints maxHeight="166.0" minHeight="10.0" prefHeight="118.0" vgrow="SOMETIMES"/>
-                <RowConstraints maxHeight="60.0" minHeight="3.0" prefHeight="31.0" vgrow="SOMETIMES"/>
-                <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="154.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="60.0" minHeight="3.0" prefHeight="38.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="151.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
                 <Label text="Изображения текущего DNS:"/>
                 <Label text="Изображения внешних DNS:" GridPane.rowIndex="2"/>
-                <ListView fx:id="listViewCurrentDNS" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1"/>
-                <ListView fx:id="listViewExternalDNS" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3"/>
+                <ListView fx:id="listViewCurrentDNS" prefHeight="108.0" prefWidth="275.0" GridPane.rowIndex="1"/>
+                <ListView fx:id="listViewExternalDNS" prefHeight="154.0" prefWidth="275.0" GridPane.rowIndex="3"/>
             </children>
         </GridPane>
     </children>

@@ -1,4 +1,4 @@
-package ru.wkn.connecting;
+package ru.wkn.protocols.httpconnecting;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

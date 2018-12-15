@@ -4,7 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import ru.wkn.model.html.handlers.HtmlPageHandler;
 import ru.wkn.model.html.utils.Converter;
-import ru.wkn.connecting.Connector;
+import ru.wkn.protocols.httpconnecting.Connector;
 import ru.wkn.protocols.HttpProtocol;
 
 import java.io.IOException;

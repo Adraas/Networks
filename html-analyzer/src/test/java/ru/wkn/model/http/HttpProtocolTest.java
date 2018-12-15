@@ -1,7 +1,7 @@
 package ru.wkn.model.http;
 
 import org.junit.jupiter.api.Test;
-import ru.wkn.connecting.Connector;
+import ru.wkn.protocols.httpconnecting.Connector;
 import ru.wkn.protocols.HttpProtocol;
 
 import java.io.IOException;

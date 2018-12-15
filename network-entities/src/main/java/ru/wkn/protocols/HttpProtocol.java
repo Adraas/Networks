@@ -1,6 +1,6 @@
 package ru.wkn.protocols;
 
-import ru.wkn.connecting.Connector;
+import ru.wkn.protocols.httpconnecting.Connector;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,15 +1,17 @@
-package ru.wkn.model.http;
+package ru.wkn.protocols;
+
+import ru.wkn.connecting.Connector;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
-public class RequestManager {
+public class HttpProtocol implements Protocol {
 
     private Connector connector;
 
-    public RequestManager(Connector connector) {
+    public HttpProtocol(Connector connector) {
         this.connector = connector;
     }
 

@@ -5,7 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import ru.wkn.model.HandlerFacade;
-import ru.wkn.model.http.Connector;
+import ru.wkn.connecting.Connector;
 
 import java.io.IOException;
 

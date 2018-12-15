@@ -1,4 +1,4 @@
-package ru.wkn.model.http;
+package ru.wkn.connecting;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -39,7 +39,7 @@ public class Connector {
         isConnected = socket.isConnected();
     }
 
-    protected void connect() throws IOException {
+    public void connect() throws IOException {
         if (socket == null) {
             socketInit();
         }
@@ -49,18 +49,18 @@ public class Connector {
         isConnected = socket.isConnected();
     }
 
-    protected void close() throws IOException {
+    public void close() throws IOException {
         if (socket != null) {
             socket.close();
             isConnected = socket.isConnected();
         }
     }
 
-    protected URI getUri() {
+    public URI getUri() {
         return uri;
     }
 
-    protected Socket getSocket() {
+    public Socket getSocket() {
         if (socket == null) {
             socketInit();
         }
@@ -68,7 +68,7 @@ public class Connector {
         return socket;
     }
 
-    protected boolean isConnected() {
+    public boolean isConnected() {
         return isConnected;
     }
 

@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
-public class HttpProtocol implements Protocol {
+public class HTTProtocol extends Protocol {
 
     private Connector connector;
 
-    public HttpProtocol(Connector connector) {
+    public HTTProtocol(Connector connector) {
         this.connector = connector;
     }
 

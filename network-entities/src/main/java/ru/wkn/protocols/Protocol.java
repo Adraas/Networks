@@ -1,4 +1,4 @@
 package ru.wkn.protocols;
 
-public interface Protocol {
+public abstract class Protocol {
 }

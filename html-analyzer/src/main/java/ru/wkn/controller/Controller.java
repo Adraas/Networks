@@ -8,6 +8,6 @@ public class Controller {
 
     public void startWithHtmlHandlerWindow() throws IOException {
         HtmlHandlerWindow htmlHandlerWindow = new HtmlHandlerWindow();
-        htmlHandlerWindow.windowInitialization("HTML-Handler", 600, 400);
+        htmlHandlerWindow.windowInitialization("HTML-Handler", 610, 330);
     }
 }

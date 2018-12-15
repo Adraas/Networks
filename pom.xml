@@ -28,6 +28,16 @@
         <resources.outputDirectoryPrefix>lib/</resources.outputDirectoryPrefix>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>html-analyzer</id>
+            <modules>
+                <module>html-analyzer</module>
+                <module>network-entities</module>
+            </modules>
+        </profile>
+    </profiles>
+
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
@@ -49,22 +59,6 @@
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-
-            <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>${resources.outputDirectoryPrefix}</classpathPrefix>
-                            <mainClass>ru.wkn.Launcher</mainClass>
-                        </manifest>
-                    </archive>
                 </configuration>
             </plugin>
 

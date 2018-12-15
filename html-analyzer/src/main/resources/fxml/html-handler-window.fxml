@@ -7,16 +7,14 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121"
-            xmlns:fx="http://javafx.com/fxml/1"
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity"
+            prefHeight="330.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/8.0.121"
             fx:controller="ru.wkn.controller.windowcontrollers.HtmlHandlerWindowController">
     <children>
-        <MenuBar layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="575.0">
+        <MenuBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0"
+                 prefWidth="610.0">
             <menus>
                 <Menu mnemonicParsing="false" text="Файл">
                     <items>
@@ -30,58 +28,70 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <GridPane layoutX="14.0" layoutY="70.0" prefHeight="125.0" prefWidth="286.0">
+        <GridPane layoutX="14.0" layoutY="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                  minWidth="-Infinity" prefHeight="120.0" prefWidth="285.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="122.0" minWidth="10.0" prefWidth="94.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="177.0" minWidth="10.0" prefWidth="177.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="105.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="180.0"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
-                <TextField fx:id="textFieldURI" promptText="Только http-протокол" GridPane.columnIndex="1"/>
-                <TextField fx:id="textFieldPort" promptText="Например, 80" GridPane.columnIndex="1"
-                           GridPane.rowIndex="1"/>
-                <TextField fx:id="textFieldDepth" promptText="Влияние на скорость" GridPane.columnIndex="1"
-                           GridPane.rowIndex="2"/>
+                <TextField fx:id="textFieldURI" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                           minWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Только http-протокол"
+                           GridPane.columnIndex="1"/>
+                <TextField fx:id="textFieldPort" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                           minWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Например, 80"
+                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <TextField fx:id="textFieldDepth" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                           minWidth="-Infinity" prefHeight="25.0" prefWidth="180.0" promptText="Влияние на скорость"
+                           GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                 <Label text="URL:"/>
                 <Label text="Порт:" GridPane.rowIndex="1"/>
                 <Label text="Глубина проверки:" GridPane.rowIndex="2"/>
-                <Button mnemonicParsing="false" onAction="#clickOnButtonPerformCheck" prefHeight="25.0"
-                        prefWidth="177.0" text="Выполнить проверку" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                        mnemonicParsing="false" onAction="#clickOnButtonPerformCheck" prefHeight="25.0"
+                        prefWidth="180.0" text="Выполнить проверку" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
             </children>
         </GridPane>
-        <GridPane layoutX="14.0" layoutY="186.0" prefHeight="197.0" prefWidth="286.0">
+        <GridPane layoutX="14.0" layoutY="170.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                  minWidth="-Infinity" prefHeight="145.0" prefWidth="285.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="285.0"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="97.0" minHeight="10.0" prefHeight="44.0" vgrow="SOMETIMES"/>
-                <RowConstraints maxHeight="185.0" minHeight="10.0" prefHeight="153.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="120.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
                 <Label text="Посещенные адреса:"/>
-                <ListView fx:id="listViewVisitedAddresses" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1"/>
+                <ListView fx:id="listViewVisitedAddresses" maxHeight="-Infinity" maxWidth="-Infinity"
+                          minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="285.0"
+                          GridPane.rowIndex="1"/>
             </children>
         </GridPane>
-        <GridPane layoutX="312.0" layoutY="44.0" prefHeight="339.0" prefWidth="275.0">
+        <GridPane layoutX="311.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                  minWidth="-Infinity" prefHeight="290.0" prefWidth="285.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="285.0"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="78.0" minHeight="0.0" prefHeight="27.0" vgrow="SOMETIMES"/>
-                <RowConstraints maxHeight="166.0" minHeight="10.0" prefHeight="118.0" vgrow="SOMETIMES"/>
-                <RowConstraints maxHeight="60.0" minHeight="3.0" prefHeight="38.0" vgrow="SOMETIMES"/>
-                <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="151.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="120.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="120.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
                 <Label text="Изображения текущего DNS:"/>
                 <Label text="Изображения внешних DNS:" GridPane.rowIndex="2"/>
-                <ListView fx:id="listViewCurrentDNS" prefHeight="108.0" prefWidth="275.0" GridPane.rowIndex="1"/>
-                <ListView fx:id="listViewExternalDNS" prefHeight="154.0" prefWidth="275.0" GridPane.rowIndex="3"/>
+                <ListView fx:id="listViewCurrentDNS" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                          minWidth="-Infinity" prefHeight="120.0" prefWidth="285.0" GridPane.rowIndex="1"/>
+                <ListView fx:id="listViewExternalDNS" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                          minWidth="-Infinity" prefHeight="120.0" prefWidth="285.0" GridPane.rowIndex="3"/>
             </children>
         </GridPane>
     </children>

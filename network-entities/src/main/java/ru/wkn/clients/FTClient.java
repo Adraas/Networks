@@ -53,8 +53,7 @@ public class FTClient extends Client {
         if (fileTypesAssociating.containsKey(fileTypeID)) {
             return fileTypesAssociating.get(fileTypeID);
         } else {
-            String fileType = "";
-            // some instructions by initializing this string...
+            String fileType = ftpFile.getName().split("\\.")[1];
             fileTypesAssociating.put(fileTypeID, fileType);
             return fileType;
         }

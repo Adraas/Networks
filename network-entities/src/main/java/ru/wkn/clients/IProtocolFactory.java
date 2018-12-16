@@ -1,6 +1,8 @@
 package ru.wkn.clients;
 
+import org.apache.commons.net.SocketClient;
+
 public interface IProtocolFactory {
 
-    Client createProtocol(String protocolType);
+    Client createProtocol(SocketClient socketClient);
 }

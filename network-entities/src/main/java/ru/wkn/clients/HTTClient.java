@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
-public class HTTClient extends Client {
+public class HTTClient implements Client {
 
     private Connector connector;
 

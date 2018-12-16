@@ -2,7 +2,7 @@ package ru.wkn.clients;
 
 import org.apache.commons.net.SocketClient;
 
-public class SMTClient extends Client {
+public class SMTClient implements Client {
 
     private SocketClient socketClient;
 

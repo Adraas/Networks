@@ -36,6 +36,13 @@
                 <module>network-entities</module>
             </modules>
         </profile>
+        <profile>
+            <id>ftp-analyzer</id>
+            <modules>
+                <module>html-analyzer</module>
+                <module>network-entities</module>
+            </modules>
+        </profile>
     </profiles>
 
     <dependencies>

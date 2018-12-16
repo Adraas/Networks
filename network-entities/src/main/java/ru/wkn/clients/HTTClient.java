@@ -1,17 +1,17 @@
-package ru.wkn.protocols;
+package ru.wkn.clients;
 
-import ru.wkn.protocols.httpconnecting.Connector;
+import ru.wkn.clients.httpconnecting.Connector;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
-public class HTTProtocol extends Protocol {
+public class HTTClient extends Client {
 
     private Connector connector;
 
-    public HTTProtocol(Connector connector) {
+    public HTTClient(Connector connector) {
         this.connector = connector;
     }
 

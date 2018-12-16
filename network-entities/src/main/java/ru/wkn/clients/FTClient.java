@@ -1,4 +1,4 @@
-package ru.wkn.protocols;
+package ru.wkn.clients;
 
 import org.apache.commons.net.SocketClient;
 import org.apache.commons.net.ftp.FTPClient;
@@ -11,12 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FTProtocol extends Protocol {
+public class FTClient extends Client {
 
     private SocketClient socketClient;
     private Map<Integer, String> fileTypesAssociating;
 
-    public FTProtocol(SocketClient socketClient) {
+    public FTClient(SocketClient socketClient) {
         this.socketClient = socketClient;
         fileTypesAssociating = new HashMap<>();
     }

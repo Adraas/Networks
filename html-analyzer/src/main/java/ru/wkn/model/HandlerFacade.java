@@ -4,8 +4,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import ru.wkn.model.html.handlers.HtmlPageHandler;
 import ru.wkn.model.html.utils.Converter;
-import ru.wkn.protocols.httpconnecting.Connector;
-import ru.wkn.protocols.HTTProtocol;
+import ru.wkn.clients.httpconnecting.Connector;
+import ru.wkn.clients.HTTClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.Map;
 public class HandlerFacade {
 
     private Connector connector;
-    private HTTProtocol HTTProtocol;
+    private HTTClient HTTProtocol;
 
     private String startUriAddress;
     private Map<String, Document> pages;
@@ -25,7 +25,7 @@ public class HandlerFacade {
 
     public HandlerFacade(Connector connector) {
         this.connector = connector;
-        HTTProtocol = new HTTProtocol(connector);
+        HTTProtocol = new HTTClient(connector);
         pages = new HashMap<>();
         visitedLinks = new ArrayList<>();
     }

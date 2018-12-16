@@ -15,6 +15,6 @@ class FTClientTest {
         ftpClient.connect("91.222.128.11");
         ftpClient.login("testftp_guest", "12345");
         FTClient ftClient = new FTClient(ftpClient);
-        assertTrue(ftClient.getSizesOfFileGroups().values().size() > 1);
+        assertTrue(ftClient.getSizesOfFileGroups().values().size() > 0);
     }
 }

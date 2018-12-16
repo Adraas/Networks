@@ -3,59 +3,54 @@ package ru.wkn.clients;
 import org.apache.commons.net.SocketClient;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import ru.wkn.clients.units.Pair;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class FTClient extends Client {
 
     private SocketClient socketClient;
-    private Map<Integer, String> fileTypesAssociating;
 
     public FTClient(SocketClient socketClient) {
         this.socketClient = socketClient;
-        fileTypesAssociating = new HashMap<>();
     }
 
-    public Map<String, Long> getSizesOfFileGroups() throws IOException {
-        List<FTPFile> ftpFiles = new ArrayList<>();
-        getAllFiles(ftpFiles, ((FTPClient) socketClient).printWorkingDirectory());
-        Map<String, Long> sizesOfFileTypes = new HashMap<>();
+    public Map<String, Pair<Integer, Long>> getSizesOfFileGroups() throws IOException {
+        List<FTPFile> ftpFiles = getAllFiles(((FTPClient) socketClient).printWorkingDirectory());
+        Map<String, Pair<Integer, Long>> filesAssociating = new HashMap<>();
 
         for (FTPFile ftpFile : ftpFiles) {
             long fileSize = ftpFile.getSize();
             String fileType = getFileType(ftpFile);
-            if (sizesOfFileTypes.containsKey(fileType)) {
-                sizesOfFileTypes.replace(fileType, sizesOfFileTypes.get(fileType) + fileSize);
+            if (filesAssociating.containsKey(fileType)) {
+                filesAssociating.replace(fileType,
+                        new Pair<>(filesAssociating.get(fileType).getFirstValue() + 1,
+                                filesAssociating.get(fileType).getSecondValue() + fileSize));
             } else {
-                sizesOfFileTypes.put(fileType, fileSize);
+                filesAssociating.put(fileType, new Pair<>(1, fileSize));
             }
         }
-        return sizesOfFileTypes;
+        return filesAssociating;
     }
 
-    private List<FTPFile> getAllFiles(List<FTPFile> allFtpFiles, String pathname) throws IOException {
-        allFtpFiles.addAll(Arrays.asList(((FTPClient) socketClient).listFiles(pathname)));
-        FTPFile[] ftpDirectories = ((FTPClient) socketClient).listDirectories(pathname);
+    private List<FTPFile> getAllFiles(String pathname) throws IOException {
+        List<FTPFile> allFtpFiles = Arrays.stream(((FTPClient) socketClient)
+                .listFiles(pathname)).filter(FTPFile::isFile).collect(Collectors.toList());
+        List<FTPFile> ftpDirectories = Arrays.stream(((FTPClient) socketClient)
+                .listDirectories(pathname)).filter(FTPFile::isDirectory).collect(Collectors.toList());
 
         for (FTPFile ftpDirectory : ftpDirectories) {
-            allFtpFiles.addAll(getAllFiles(allFtpFiles, ftpDirectory.getName()));
+            allFtpFiles.addAll(getAllFiles(ftpDirectory.getName()));
         }
         return allFtpFiles;
     }
 
     private String getFileType(FTPFile ftpFile) {
-        int fileTypeID = ftpFile.getType();
-        if (fileTypesAssociating.containsKey(fileTypeID)) {
-            return fileTypesAssociating.get(fileTypeID);
-        } else {
-            String fileType = ftpFile.getName().split("\\.")[1];
-            fileTypesAssociating.put(fileTypeID, fileType);
-            return fileType;
-        }
+        return ftpFile.getName().split("\\.")[1];
     }
 }

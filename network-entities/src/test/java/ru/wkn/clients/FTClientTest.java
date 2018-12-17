@@ -12,9 +12,8 @@ class FTClientTest {
     @Test
     void testGetSizesOfFileGroups() throws IOException {
         FTPClient ftpClient = new FTPClient();
-        ftpClient.connect("91.222.128.11");
-        ftpClient.login("testftp_guest", "12345");
         FTClient ftClient = new FTClient(ftpClient);
-        assertTrue(ftClient.getSizesOfFileGroups().values().size() > 0);
+        assertTrue(ftClient.getSizesOfFileGroups("91.222.128.11", "testftp_guest", "12345")
+                .values().size() > 0);
     }
 }

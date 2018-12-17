@@ -20,7 +20,10 @@ public class FTClient implements Client {
         this.socketClient = socketClient;
     }
 
-    public Map<String, Pair<Integer, Long>> getSizesOfFileGroups() throws IOException {
+    public Map<String, Pair<Integer, Long>> getSizesOfFileGroups(String hostname, String username, String password)
+            throws IOException {
+        socketClient.connect(hostname);
+        ((FTPClient) socketClient).login(username, password);
         List<FTPFile> ftpFiles = getAllFiles(((FTPClient) socketClient).printWorkingDirectory());
         Map<String, Pair<Integer, Long>> filesAssociating = new HashMap<>();
 

@@ -39,7 +39,7 @@
         <profile>
             <id>ftp-analyzer</id>
             <modules>
-                <module>html-analyzer</module>
+                <module>ftp-analyzer</module>
                 <module>network-entities</module>
             </modules>
         </profile>

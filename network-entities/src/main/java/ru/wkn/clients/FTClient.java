@@ -48,12 +48,23 @@ public class FTClient implements Client {
                 .listDirectories(pathname)).filter(FTPFile::isDirectory).collect(Collectors.toList());
 
         for (FTPFile ftpDirectory : ftpDirectories) {
-            allFtpFiles.addAll(getAllFiles(ftpDirectory.getName()));
+            allFtpFiles.addAll(getAllFiles(newPathname(pathname, ftpDirectory.getName())));
         }
         return allFtpFiles;
     }
 
     private String getFileType(FTPFile ftpFile) {
-        return ftpFile.getName().split("\\.")[1];
+        String[] fileParameters = ftpFile.getName().split("\\.");
+        return fileParameters[fileParameters.length - 1];
+    }
+
+    private String newPathname(String oldPathname, String nextDirectoryName) {
+        String newPathname = oldPathname;
+        if (newPathname.endsWith("/")) {
+            newPathname = newPathname.concat(nextDirectoryName);
+        } else {
+            newPathname = newPathname.concat("/".concat(nextDirectoryName));
+        }
+        return newPathname;
     }
 }

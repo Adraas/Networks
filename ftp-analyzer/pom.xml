@@ -34,7 +34,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <classpathPrefix>${resources.outputDirectoryPrefix}</classpathPrefix>
+                            <classpathPrefix>${dependencies.outputDirectoryPrefix}</classpathPrefix>
                             <mainClass>ru.wkn.Launcher</mainClass>
                         </manifest>
                     </archive>
